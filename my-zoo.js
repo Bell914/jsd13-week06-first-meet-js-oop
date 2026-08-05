@@ -125,3 +125,26 @@ console.log(`So it swooped down to peck at the food that had been laid out.`);
 zazu.eat();
 console.log("");
 
+console.log(`Once full, ${zazu.name} lifted its head to the sky and let out a loud call:`);
+zazu.makeSound();
+console.log(`${zazu.name}'s call echoed so far that every other animal in the zoo could hear it.`);
+console.log("");
+
+console.log(`Meanwhile, in a small corner of the kitchen, ${remy.name} the little ${remy.furColor} rat was busy cooking.`);
+console.log(`${remy.name} has been cooking for ${zazu.name} and the whole zoo. The delicious smell filled the kitchen.`);
+remy.eat();
+console.log("");
+
+console.log(`Not far away, ${baloo.name} the big ${baloo.furColor} bear sat carefully grooming its own fur.`);
+baloo.groom();
+baloo.makeSound();
+console.log("");
+
+console.log(`${simba.name} the ${simba.furColor} lion and ${leo.name} the ${leo.species} were resting under the shade.`);
+leo.makeSound();
+simba.makeSound();
+console.log("");
+
+console.log(`That afternoon, even though each animal went about their own business, they all lived together happily at ${myZoo.zooName}.`);
+console.log("\n==============================================");
+console.log("The End ");
