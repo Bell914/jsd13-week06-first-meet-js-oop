@@ -27,6 +27,7 @@ console.log(leo.hunger);
 
 class Mammal extends Animal{
     constructor(name,species,furColor){
+         super(name, species);
         this.furColor = furColor;
 
     }
@@ -41,5 +42,9 @@ class Bird extends Animal{
 // this is an example of Polymorphism; overriding the makeSound method
     makeSound(){
         console.log(`${this.name} chirps: Tweet tweet!`);
+    
     }
-}
+
+        }
+    const zazu = new Bird("Zazu", "Hornbill", "2 feet");
+    const simba = new Mammal("Simba", "Lion", "Golden");
