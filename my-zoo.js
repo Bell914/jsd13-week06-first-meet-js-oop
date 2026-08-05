@@ -103,12 +103,25 @@ const leo = new Animal("Leo", "Lion");
 const zazu = new Bird("Zazu", "Hornbill", "2 feet");
 const baloo = new Mammal("Baloo", "Bear", "brown");
 const simba = new Mammal("Simba", "Lion", "tawny");
+const remy = new Mammal("Remy", "Rat", "grey");
 
 // Add them to the zoo
 myZoo.addAnimal(leo);
 myZoo.addAnimal(zazu);
 myZoo.addAnimal(baloo);
 myZoo.addAnimal(simba);
+myZoo.addAnimal(remy);
 
 // Run the routine
 myZoo.showAllAnimals();
+
+// --- STORY TIME ---
+console.log("\n==============================================");
+console.log("A Tale: One Afternoon at the Zoo");
+console.log("==============================================\n");
+
+console.log(`After flying around all morning, ${zazu.name} the Hornbill with a ${zazu.wingSpan} wingspan started feeling hungry.`);
+console.log(`So it swooped down to peck at the food that had been laid out.`);
+zazu.eat();
+console.log("");
+
