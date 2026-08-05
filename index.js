@@ -7,12 +7,15 @@ class Animal {
     }
     makeSound(){
         console.log(`${this.name} makes a sound .... `);
+        
+
     }
     eat(){
         this.hunger = this.hunger - 10;
         console.log(
             `${this.name} ate, Hunger level is now ${this.hunger}.`,
         );
+
         }    
     } 
     //opject instans
@@ -37,14 +40,27 @@ class Mammal extends Animal{
 }
 class Bird extends Animal{
     constructor(name,species,wingSpan){
+        super(name, species);
         this.wingSpan = wingSpan;
+
     }
 // this is an example of Polymorphism; overriding the makeSound method
     makeSound(){
         console.log(`${this.name} chirps: Tweet tweet!`);
+        return "chirps: Tweet! Tweet!";
     
     }
 
         }
+
     const zazu = new Bird("Zazu", "Hornbill", "2 feet");
-    const simba = new Mammal("Simba", "Lion", "Golden");
+    const bear = new Mammal("Baloo", "Bear", "brown");
+    const giraffe = new Mammal("Memo", "Giraffe", "yellow");
+    const rat = new Mammal("Remy", "Rat", "grey");
+    const maru = new Mammal("Maru", "Cat", "Orange");
+
+    zazu.eat();
+    zazu.makeSound();
+
+
+    console.log(`${rat.name} is cooking for ${zazu.name}, while ${bear.name} is grooming their ${bear.furColor} fur, ${giraffe.name} is eating leaves, and ${maru.name} is napping in the sun.`);
