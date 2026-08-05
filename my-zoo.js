@@ -27,6 +27,7 @@ class Animal {
 
   makeSound() {
     console.log(`${this.name} makes a generic animal sound.`);
+    return "generic animal sound";
   }
 }
 
@@ -56,6 +57,7 @@ class Bird extends Animal {
   // Replacing the generic sound with a bird-specific one
   makeSound() {
     console.log(`${this.name} chirps: Tweet! Tweet!`);
+    return "chirps: Tweet! Tweet!";
   }
 
   fly() {
