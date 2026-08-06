@@ -37,6 +37,11 @@ class Animal {
   makeSound() {
     console.log(`${this.name} makes a generic animal sound.`);
   }
+
+  // NEW: describe() returns a summary string about this animal
+  describe() {
+    return `${this.name} the ${this.species} (${this.getStatus()})`;
+  }
 }
 
 class Lion extends Animal {
@@ -44,7 +49,10 @@ class Lion extends Animal {
     super(name, "🦁", "lion");
   }
 
+  // NEW: calls the parent's makeSound() first (super.makeSound()),
+  // then adds the Lion-specific sound on top of it.
   makeSound() {
+    super.makeSound();
     console.log(`${this.name} lets out a mighty ROAR!`);
   }
 }
@@ -55,6 +63,7 @@ class Elephant extends Animal {
   }
 
   makeSound() {
+    super.makeSound();
     console.log(`${this.name} trumpets loudly!`);
   }
 }
@@ -66,6 +75,7 @@ class Bird extends Animal {
   }
 
   makeSound() {
+    super.makeSound();
     console.log(`${this.name} chirps: Tweet! Tweet!`);
   }
 }
@@ -76,6 +86,7 @@ class Bear extends Animal {
   }
 
   makeSound() {
+    super.makeSound();
     console.log(`${this.name} growls softly.`);
   }
 }
@@ -176,11 +187,9 @@ function inspectLocation() {
   console.log(`\nYou are at: ${location.name}`);
 
   if (location.animal) {
-    const animal = location.animal;
-    console.log(
-      `You see ${animal.name} the ${animal.species} (${animal.getStatus()}).`,
-    );
-    animal.makeSound();
+    // NEW: use describe() for a one-line summary, then play its sound
+    console.log(location.animal.describe());
+    location.animal.makeSound();
   } else {
     console.log(location.description);
   }
