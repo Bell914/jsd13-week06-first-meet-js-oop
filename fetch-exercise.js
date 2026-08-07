@@ -1,3 +1,16 @@
+// ประกาศ Class Animal และ ตัวแปรสำหรับเก็บข้อมูล
+class Animal {
+    constructor(name, taxonomyClass, symbol, sound) {
+        this.name = name;
+        this.taxonomyClass = taxonomyClass;
+        this.symbol = symbol;
+        this.sound = sound;
+    }
+}
+
+const animals = [];
+const zooPath = [];
+
 async function addAnimalFromAPI() {
     const url = "https://api.api-ninjas.com/v1/animals?name=cat"
 
@@ -34,5 +47,4 @@ async function addAnimalFromAPI() {
     }
 }
 
-// ต้องเพิ่มคำสั่งเรียกใช้งานฟังก์ชันตรงนี้ครับ
 addAnimalFromAPI();
