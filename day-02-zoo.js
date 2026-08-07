@@ -224,53 +224,73 @@ function prepareAnimalFood() {
  * ============================
  */
 
-function handleCommand(command) {
-  switch (command) {
-    case "l":
-      if (visitor.currentIndex > 0) {
-        visitor.currentIndex--;
-        console.log(`${visitor.name} walks left.`);
-      } else {
-        console.log(`You are already at the start of the path.`);
-      }
-      break;
+async function addAnimalFromAPI() {
+  const url = "https://api.api-ninjas.com/v1/animals?name=cat";
 
-    case "r":
-      if (visitor.currentIndex < zooPath.length - 1) {
-        visitor.currentIndex++;
-        console.log(`${visitor.name} walks right.`);
-      } else {
-        console.log(`You are already at the end of the path.`);
-      }
-      break;
+  try {
+    const response = await fetch(url, {
+      headers: {
+        "X-Api-Key": "q2zfRPiEpx9nvpTZ6atW9PWxJBebLwSPtnZLcPIt",
+      },
+    });
 
-    case "i":
-      inspectLocation();
-      break;
+    const data = await response.json();
 
-    case "d":
-      showZooDirectory();
-      break;
+    const apiAnimal = data[0];
 
-    case "f":
-      feedAnimalAtLocation();
-      break;
+    const newAnimal = new Animal(
+      apiAnimal.name,
+      "🐱",
+      apiAnimal.taxonomy.class
+    );
 
-    default:
-      console.log(`\nUnknown command: "${command}". Try again.`);
+    animals.push(newAnimal);
+
+    zooPath.push({
+      symbol: "🐱",
+      name: `${apiAnimal.name} Habitat`,
+      animal: newAnimal,
+    });
+
+    console.log(`${newAnimal.name} has been added!`);
+
+  } catch (error) {
+    console.error("Something went wrong!", error);
   }
 }
 
-/**
- * ============================
- * READLINE LOOP (Asynchronous)
- * ============================
- */
+async function handleCommand(command) {
+  if (command === "r") {
+    if (visitor.currentIndex < zooPath.length - 1) {
+      visitor.currentIndex++;
+      console.log(`${visitor.name} walks to the right`);
+    } else {
+      console.log(`You are already at the end of the path.`);
+    }
+  } else if (command === "l") {
+    if (visitor.currentIndex > 0) {
+      visitor.currentIndex--;
+      console.log(`${visitor.name} walks to the left`);
+    } else {
+      console.log(`You are already at the start of the path.`);
+    }
+  } else if (command === "i") {
+    inspectLocation();
+  } else if (command === "d") {
+    showZooDirectory();
+  } else if (command === "f") {
+    feedAnimalAtLocation();
+  } else if (command === "a") {
+    await addAnimalFromAPI();
+  } else {
+    console.log("Please enter l, r, i, d, f, a, q");
+  }
+}
 
-function askForCommand() {
+async function askForCommand() {
   rl.question(
-    "\n[l] Left | [r] Right | [i] Inspect | [d] Directory | [f] Feed | [q] Quit\n> ",
-    (answer) => {
+    "\n[l] Left | [r] Right | [i] Inspect | [d] Directory | [f] Feed | [a] Add Animal | [q] Quit\n> ",
+    async (answer) => {
       const command = answer.trim().toLowerCase();
 
       if (command === "q") {
@@ -279,7 +299,7 @@ function askForCommand() {
         return;
       }
 
-      handleCommand(command);
+      await handleCommand(command);
       displayZoo();
       askForCommand();
     },
