@@ -1,50 +1,19 @@
-// ประกาศ Class Animal และ ตัวแปรสำหรับเก็บข้อมูล
-class Animal {
-    constructor(name, taxonomyClass, symbol, sound) {
-        this.name = name;
-        this.taxonomyClass = taxonomyClass;
-        this.symbol = symbol;
-        this.sound = sound;
-    }
-}
+const url = "https://api.api-ninjas.com/v1/animals?name=cat";
 
-const animals = [];
-const zooPath = [];
 
-async function addAnimalFromAPI() {
-    const url = "https://api.api-ninjas.com/v1/animals?name=cat"
-
-    try {
-       const response = await fetch(url,{
+async function getPost(){ // async ทำให้สามารถใช้ await ข้างในฟังก์ชันได้
+    try { // โค้ดในนี้จะฟีลลองรันดูก่อน ถ้า error จะกระโดดไปที่ catch ทันที
+        const response = await fetch(url, { // fetch เพื่อยิง http request ไปที่ url ที่กำหนดไว้
             headers: {
-               "X-Api-Key" : "q2zfRPiEpx9nvpTZ6atW9PWxJBebLwSPtnZLcPIt",
+                "X-Api-Key": "NmEQmGcDApy8ObeCjgIR9iPFdeiprrajw1DjGIHe"
+                // await คือ ต้องรอให้มี response กลับมาก่อน ถึงจะทำงานอันต่อไปได้
             }
-         });
-
-       const data = await response.json();
-
-       const apiAnimal = data[0];
-
-       const newAnimal = new Animal(
-            apiAnimal.name,
-            apiAnimal.taxonomy.class,
-            ":cat:",
-            "meow meow!"
-        );
-
-        animals.push(newAnimal);
-
-        zooPath.push({
-            symbol: ":cat:",
-            name: `${apiAnimal.name} Habitat`,
-            animal: newAnimal,
         });
-
-        console.log(`${newAnimal.name} has been added!`);
-
+        const data = await response.json(); // แปลง response ให้เป็น java ที่ใช้งานได้จริง
+        console.log(data);
     } catch (error) {
-       console.error("Something went wrong!", error)
+        console.error("Something went wrong!", error);
     }
 }
 
-addAnimalFromAPI();
+getPost();
