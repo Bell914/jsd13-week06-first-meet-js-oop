@@ -2,6 +2,9 @@
   "type": "module",
   "scripts": {
     "day1": "node my-zoo.js",
-    "day2": "node day-2-zoo.js"
+    "day2": "node day-2-zoo.js",
+    "day3": "node fetch-exercise.js",
+    "test01": "node before-factory-functions.js",
+    "test02": "node 02-factory-functions.js"
   }
 }

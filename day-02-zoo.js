@@ -191,7 +191,7 @@ function prepareAnimalFood() {
 
   setTimeout(() => {
     console.log("\nThe animal feed is ready.");
-  }, 9000);
+  }, 3000);
 
   console.log("Visitors can continue exploring.");
 }
@@ -208,7 +208,6 @@ function askForCommand() {
         return;
       }
 
-      console.clear();
       handleCommand(command);
       displayZoo();
       askForCommand();
@@ -216,7 +215,6 @@ function askForCommand() {
   );
 }
 
-console.clear();
 console.log(`Welcome to the ${zooName} Explorer.`);
 showZooDirectory();
 displayZoo();
