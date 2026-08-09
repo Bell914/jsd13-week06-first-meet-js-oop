@@ -1,102 +1,90 @@
 import { createInterface } from "node:readline";
 
-const rl = createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-
-/**
- * ============================
- * CLASSES
- * ============================
- */
-
 class Animal {
-  constructor(name, symbol, species) {
+  constructor(name, species, symbol) {
     this.name = name;
-    this.symbol = symbol;
     this.species = species;
-    this.hunger = 50;
+    this.symbol = symbol;
   }
 
-  getStatus() {
-    if (this.hunger <= 0) return "Full";
-    if (this.hunger <= 20) return "Satisfied";
-    return "Hungry";
-  }
-
-  eat() {
-    if (this.hunger <= 0) {
-      console.log(`${this.name} is already full!`);
-    } else {
-      this.hunger = this.hunger - 10;
-      console.log(`${this.name} ate. Hunger is now ${this.hunger}.`);
-    }
+  describe() {
+    return `${this.name} is a ${this.species}.`;
   }
 
   makeSound() {
-    console.log(`${this.name} makes a generic animal sound.`);
+    return `${this.name} makes a sound.`;
   }
 }
 
 class Lion extends Animal {
   constructor(name) {
-    super(name, "🦁", "lion");
+    super(name, "lion", "🦁");
   }
 
   makeSound() {
-    console.log(`${this.name} lets out a mighty ROAR!`);
+    return `${this.name} roars!`;
   }
 }
 
 class Elephant extends Animal {
   constructor(name) {
-    super(name, "🐘", "elephant");
+    super(name, "elephant", "🐘");
   }
 
   makeSound() {
-    console.log(`${this.name} trumpets loudly!`);
+    return `${this.name} trumpets!`;
   }
 }
 
 class Bird extends Animal {
-  // species is passed in so a Bird can be a specific kind, e.g. "hornbill"
-  constructor(name, species = "hornbill") {
-    super(name, "🐦", species);
+  constructor(name) {
+    super(name, "hornbill", "🐦");
   }
 
   makeSound() {
-    console.log(`${this.name} chirps: Tweet! Tweet!`);
+    return `${this.name} chirps!`;
   }
 }
 
 class Bear extends Animal {
   constructor(name) {
-    super(name, "🐻", "bear");
+    super(name, "bear", "🐻");
   }
 
   makeSound() {
-    console.log(`${this.name} growls softly.`);
+    return `${this.name} growls!`;
   }
 }
 
 class Visitor {
-  constructor(name) {
+  constructor(name, position = 0) {
     this.name = name;
-    this.currentIndex = 0; // position along zooPath
+    this.position = position;
+  }
+
+  moveRight(maximumPosition) {
+    if (this.position < maximumPosition) {
+      this.position++;
+      return `${this.name} walks to the right.`;
+    }
+
+    return `${this.name} is already at the end of the zoo path.`;
+  }
+
+  moveLeft() {
+    if (this.position > 0) {
+      this.position--;
+      return `${this.name} walks to the left.`;
+    }
+
+    return `${this.name} is already at the entrance.`;
   }
 }
-
-/**
- * ============================
- * DATA: animals + zooPath
- * ============================
- */
 
 const animals = [
   new Lion("Simba"),
   new Elephant("Ella"),
-  new Bird("Zazu", "hornbill"),
+  new Bird("Zazu"),
   new Bear("Baloo"),
 ];
 
@@ -140,13 +128,12 @@ const zooPath = [
 ];
 
 const zooName = "JS Terminal Zoo";
-const visitor = new Visitor("BM");
+const visitor = new Visitor("Neeti");
 
-/**
- * ============================
- * DISPLAY / GAME FUNCTIONS
- * ============================
- */
+const rl = createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
 
 function showZooDirectory() {
   console.log("\nZoo directory");
@@ -160,107 +147,58 @@ function showZooDirectory() {
 }
 
 function displayZoo() {
-  const symbolsRow = zooPath.map((location) => location.symbol).join(" – ");
-  const markerRow = zooPath
-    .map((location, index) => (index === visitor.currentIndex ? "👦" : "⬜"))
-    .join(" – ");
+  const bannerRow = [`=== ${zooName} ===`];
+  const placesRow = zooPath.map((location) => location.symbol);
+  const pathwayRow = zooPath.map(() => "⬜");
 
-  console.log(`\n=== ${zooName} ===`);
-  console.log(symbolsRow);
-  console.log(markerRow);
+  pathwayRow[visitor.position] = "🧑";
+
+  console.log("");
+  console.log(bannerRow.join(""));
+  console.log(placesRow.join(" — "));
+  console.log(pathwayRow.join(" — "));
 }
 
 function inspectLocation() {
-  const location = zooPath[visitor.currentIndex];
+  const location = zooPath[visitor.position];
 
   console.log(`\nYou are at: ${location.name}`);
 
   if (location.animal) {
-    const animal = location.animal;
-    console.log(
-      `You see ${animal.name} the ${animal.species} (${animal.getStatus()}).`,
-    );
-    animal.makeSound();
+    console.log(location.animal.describe());
+    console.log(location.animal.makeSound());
   } else {
     console.log(location.description);
   }
 }
 
-function feedAnimalAtLocation() {
-  const location = zooPath[visitor.currentIndex];
-
-  if (location.animal) {
-    location.animal.eat();
+function handleCommand(command) {
+  if (command === "l") {
+    console.log(visitor.moveLeft());
+  } else if (command === "r") {
+    console.log(visitor.moveRight(zooPath.length - 1));
+  } else if (command === "i") {
+    inspectLocation();
+  } else if (command === "d") {
+    showZooDirectory();
   } else {
-    console.log(`There is no animal here to feed.`);
+    console.log("Please enter l, r, i, d, or q.");
   }
 }
 
-// Simulates the zookeeper getting the feed ready when the zoo opens.
-// Uses setTimeout so it runs in the background without blocking
-// the rest of the program (visitors can keep exploring/typing commands).
 function prepareAnimalFood() {
   console.log("\nThe zookeeper is preparing the animal feed...");
 
   setTimeout(() => {
     console.log("\nThe animal feed is ready.");
-  }, 3000);
+  }, 9000);
 
   console.log("Visitors can continue exploring.");
 }
 
-/**
- * ============================
- * MOVEMENT + COMMAND HANDLING
- * ============================
- */
-
-function handleCommand(command) {
-  switch (command) {
-    case "l":
-      if (visitor.currentIndex > 0) {
-        visitor.currentIndex--;
-        console.log(`${visitor.name} walks left.`);
-      } else {
-        console.log(`You are already at the start of the path.`);
-      }
-      break;
-
-    case "r":
-      if (visitor.currentIndex < zooPath.length - 1) {
-        visitor.currentIndex++;
-        console.log(`${visitor.name} walks right.`);
-      } else {
-        console.log(`You are already at the end of the path.`);
-      }
-      break;
-
-    case "i":
-      inspectLocation();
-      break;
-
-    case "d":
-      showZooDirectory();
-      break;
-
-    case "f":
-      feedAnimalAtLocation();
-      break;
-
-    default:
-      console.log(`\nUnknown command: "${command}". Try again.`);
-  }
-}
-
-/**
- * ============================
- * READLINE LOOP (Asynchronous)
- * ============================
- */
-
 function askForCommand() {
   rl.question(
-    "\n[l] Left | [r] Right | [i] Inspect | [d] Directory | [f] Feed | [q] Quit\n> ",
+    "\n[l] Left | [r] Right | [i] Inspect | [d] Directory | [q] Quit\n> ",
     (answer) => {
       const command = answer.trim().toLowerCase();
 
@@ -278,7 +216,6 @@ function askForCommand() {
   );
 }
 
-// --- START ---
 console.clear();
 console.log(`Welcome to the ${zooName} Explorer.`);
 showZooDirectory();
