@@ -61,8 +61,8 @@ class Elephant extends Animal {
 
 class Bird extends Animal {
   // species is passed in so a Bird can be a specific kind, e.g. "hornbill"
-  constructor(name, species = "bird") {
-    super(name, "🦜", species);
+  constructor(name, species = "hornbill") {
+    super(name, "🐦", species);
   }
 
   makeSound() {
@@ -162,7 +162,7 @@ function showZooDirectory() {
 function displayZoo() {
   const symbolsRow = zooPath.map((location) => location.symbol).join(" – ");
   const markerRow = zooPath
-    .map((location, index) => (index === visitor.currentIndex ? "🧍" : "▢"))
+    .map((location, index) => (index === visitor.currentIndex ? "👦" : "⬜"))
     .join(" – ");
 
   console.log(`\n=== ${zooName} ===`);
@@ -270,6 +270,7 @@ function askForCommand() {
         return;
       }
 
+      console.clear();
       handleCommand(command);
       displayZoo();
       askForCommand();
@@ -278,6 +279,7 @@ function askForCommand() {
 }
 
 // --- START ---
+console.clear();
 console.log(`Welcome to the ${zooName} Explorer.`);
 showZooDirectory();
 displayZoo();
